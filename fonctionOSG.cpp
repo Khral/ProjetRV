@@ -4,10 +4,10 @@ osg::Node* creerScene(Ui::MainWindow * ui)
 {
     SHPContent fileSHP(ui->label_pathSHP->text().toStdString().c_str());
 
-    osg::Geode* geode = new osg::Geode();
-    osg::Geometry* geometry = new osg::Geometry();
+    osg::Geode * geode = new osg::Geode();
+    osg::Geometry* geometry;
 
-    osg::Vec3Array* vertices = new osg::Vec3Array;
+    osg::Vec3Array* vertices;
 
     int i, j;
     osg::DrawArrays *da;
@@ -15,51 +15,59 @@ osg::Node* creerScene(Ui::MainWindow * ui)
     switch(fileSHP.shapeType)
     {
         case SHPT_POINT:
-            /*for(i=0;i<fileSHP.vPoints.size();i++)
+            for(i=0;i<fileSHP.vPoints.size();i++)
             {
-                vertices->push_back(osg::Vec3(fileSHP.vPoints[i].dX,fileSHP.vPoints[i].dY,0));
-            }
-            geometry->setVertexArray(vertices);
+                vertices = new osg::Vec3Array;
+                geometry = new osg::Geometry();
 
-            color->push_back(osg::Vec4(1.0,0.0,0.0,1.0));
-            geometry->setColorArray(color.get());
+                vertices->push_back(osg::Vec3(fileSHP.vPoints[i].dX,0,fileSHP.vPoints[i].dY));
 
-            geometry->setColorBinding(osg::Geometry::BIND_PER_PRIMITIVE_SET);
-            geometry->addPrimitiveSet(new osg::DrawArrays(GL_LINES,0,2));*/
-
-            break;
-        case SHPT_ARC:
-            for(i=0;i<fileSHP.vLines.size();i++)
-            {
-                for(j=0;j<fileSHP.vLines[i].vPointList.size();j++)
-                {
-                    vertices->push_back(osg::Vec3(fileSHP.vLines[i].vPointList[j].dX,fileSHP.vLines[i].vPointList[j].dY,0));
-                }
                 geometry->setVertexArray(vertices);
                 da = new osg::DrawArrays(osg::PrimitiveSet::LINES,0,vertices->size());
                 geometry->addPrimitiveSet(da);
                 geode->addDrawable(geometry);
             }
-
-            geode->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
-
             break;
-        case SHPT_POLYGON:
-            /*for(i=0;i<fileSHP.vPolygons.size();i++)
+
+        case SHPT_ARC:
+            for(i=0;i<fileSHP.vLines.size();i++)
             {
+                vertices = new osg::Vec3Array;
+                geometry = new osg::Geometry();
+
+                for(j=0;j<fileSHP.vLines[i].vPointList.size();j++)
+                {
+                    vertices->push_back(osg::Vec3(fileSHP.vLines[i].vPointList[j].dX,0,fileSHP.vLines[i].vPointList[j].dY));
+                }
+
+                geometry->setVertexArray(vertices);
+                da = new osg::DrawArrays(osg::PrimitiveSet::LINES,0,vertices->size());
+                geometry->addPrimitiveSet(da);
+                geode->addDrawable(geometry);
+            }
+            break;
+
+        case SHPT_POLYGON:
+            for(i=0;i<fileSHP.vPolygons.size();i++)
+            {
+                vertices = new osg::Vec3Array;
+                geometry = new osg::Geometry();
+
                 for(j=0;j<fileSHP.vPolygons[i].vPointList.size();j++)
                 {
-                    vertices->push_back(osg::Vec3(fileSHP.vPolygons[i].vPointList[j].dX,fileSHP.vPolygons[i].vPointList[j].dY,0));
+                    vertices->push_back(osg::Vec3(fileSHP.vPolygons[i].vPointList[j].dX,0,fileSHP.vPolygons[i].vPointList[j].dY));
                 }
+
+                geometry->setVertexArray(vertices);
+                da = new osg::DrawArrays(osg::PrimitiveSet::LINES,0,vertices->size());
+                geometry->addPrimitiveSet(da);
+                geode->addDrawable(geometry);
             }
-
-            geometry->setVertexArray(vertices);
-
-            geometry->setColorBinding(osg::Geometry::BIND_PER_PRIMITIVE_SET);
-            geometry->addPrimitiveSet(new osg::DrawArrays(GL_LINES,0,2));
-*/
             break;
     }
+
+    geode->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
+
 
     return geode;
 }

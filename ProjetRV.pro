@@ -5,14 +5,16 @@ HEADERS += \
     mainwindow.h \
     fonctionOSG.h \
     ViewerWidget.h \
-    shpcontent.h
+    shpcontent.h \
+    sldcontent.h
 
 SOURCES += \
     mainwindow.cpp \
     main.cpp \
     fonctionOSG.cpp \
     ViewerWidget.cpp \
-    shpcontent.cpp
+    shpcontent.cpp \
+    sldcontent.cpp
 
 LIBS+=-losg -losgGA -losgDB -losgViewer -losgText -losgUtil -lOpenThreads -losgWidget -losgQt -lshp
 
