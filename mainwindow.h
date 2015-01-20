@@ -4,6 +4,13 @@
 #include <QMainWindow>
 #include <QFileDialog>
 
+#include "ui_mainwindow.h"
+#include "fonctionOSG.h"
+#include "ViewerWidget.h"
+
+#define SHP 0
+#define SLD 1
+
 namespace Ui {
 class MainWindow;
 }

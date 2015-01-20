@@ -1,46 +1,65 @@
 #include "fonctionOSG.h"
 
-osg::Node* creerScene()
+osg::Node* creerScene(Ui::MainWindow * ui)
 {
-    // Nous créons un objet Geometry dans lequel nous allons construire notre triangle.
-    osg::Geometry* geoTriangle = new osg::Geometry;
+    SHPContent fileSHP(ui->label_pathSHP->text().toStdString().c_str());
 
-    // Nous créons un tableau de trois sommets.
-    osg::Vec3Array* tabSommet = new osg::Vec3Array;
-    tabSommet->push_back(osg::Vec3(-1, 0, -1));
-    tabSommet->push_back(osg::Vec3(1, 0, -1));
-    tabSommet->push_back(osg::Vec3(0, 0, 1));
+    osg::Geode* geode = new osg::Geode();
+    osg::Geometry* geometry = new osg::Geometry();
 
-    // Nous ajoutons le tableau de sommet a notre objet Geometry.
-    geoTriangle ->setVertexArray(tabSommet);
+    osg::Vec3Array* vertices = new osg::Vec3Array;
 
-    // Nous créons une primitive Triangle et nous ajoutons les sommets selon leur index dans le tableau tabSommet
-    osg::DrawElementsUInt* pPrimitiveSet =
-    new osg::DrawElementsUInt( osg::PrimitiveSet::TRIANGLES, 0 );
-    pPrimitiveSet->push_back(0);
-    pPrimitiveSet->push_back(1);
-    pPrimitiveSet->push_back(2);
+    int i, j;
+    osg::DrawArrays *da;
 
-    // Nous ajoutons notre primitive a notre objet Geometry.
-    geoTriangle->addPrimitiveSet(pPrimitiveSet);
+    switch(fileSHP.shapeType)
+    {
+        case SHPT_POINT:
+            /*for(i=0;i<fileSHP.vPoints.size();i++)
+            {
+                vertices->push_back(osg::Vec3(fileSHP.vPoints[i].dX,fileSHP.vPoints[i].dY,0));
+            }
+            geometry->setVertexArray(vertices);
 
-    // On met en place un tableau de couleurs. Dans notre exemple chaque sommet du triangle aura une couleur différente.
-    osg::Vec4Array* tabCouleur = new osg::Vec4Array;
-    tabCouleur->push_back(osg::Vec4(1.0f, 0.0f, 0.0f, 1.0f));
-    tabCouleur->push_back(osg::Vec4(0.0f, 1.0f, 0.0f, 1.0f));
-    tabCouleur->push_back(osg::Vec4(0.0f, 0.0f, 1.0f, 1.0f));
-    geoTriangle->setColorArray(tabCouleur);
+            color->push_back(osg::Vec4(1.0,0.0,0.0,1.0));
+            geometry->setColorArray(color.get());
 
-    // Nous nous assurons que notre triangle utilisera bien une couleur par sommet.
-    geoTriangle->setColorBinding(osg::Geometry::BIND_PER_VERTEX);
+            geometry->setColorBinding(osg::Geometry::BIND_PER_PRIMITIVE_SET);
+            geometry->addPrimitiveSet(new osg::DrawArrays(GL_LINES,0,2));*/
 
-    /*---------------------------------/!\----------------------------------*/
-    // Nous créons un nœud géométrique afin de stocker notre triangle et nous désactivons sa lumière.
-    osg::Geode* noeudGeo = new osg::Geode;
-    osg::StateSet* status = noeudGeo->getOrCreateStateSet();
-    status->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
-    noeudGeo->addDrawable(geoTriangle);
-    /*----------------------------------------------------------------------*/
+            break;
+        case SHPT_ARC:
+            for(i=0;i<fileSHP.vLines.size();i++)
+            {
+                for(j=0;j<fileSHP.vLines[i].vPointList.size();j++)
+                {
+                    vertices->push_back(osg::Vec3(fileSHP.vLines[i].vPointList[j].dX,fileSHP.vLines[i].vPointList[j].dY,0));
+                }
+                geometry->setVertexArray(vertices);
+                da = new osg::DrawArrays(osg::PrimitiveSet::LINES,0,vertices->size());
+                geometry->addPrimitiveSet(da);
+                geode->addDrawable(geometry);
+            }
 
-    return noeudGeo;
+            geode->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
+
+            break;
+        case SHPT_POLYGON:
+            /*for(i=0;i<fileSHP.vPolygons.size();i++)
+            {
+                for(j=0;j<fileSHP.vPolygons[i].vPointList.size();j++)
+                {
+                    vertices->push_back(osg::Vec3(fileSHP.vPolygons[i].vPointList[j].dX,fileSHP.vPolygons[i].vPointList[j].dY,0));
+                }
+            }
+
+            geometry->setVertexArray(vertices);
+
+            geometry->setColorBinding(osg::Geometry::BIND_PER_PRIMITIVE_SET);
+            geometry->addPrimitiveSet(new osg::DrawArrays(GL_LINES,0,2));
+*/
+            break;
+    }
+
+    return geode;
 }

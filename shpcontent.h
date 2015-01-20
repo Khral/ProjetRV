@@ -50,6 +50,8 @@ public:
     std::vector<MyPolygon2D> vPolygons;
     //Bounding Box of Shapefile
     SBoundingBox sBoundingBox;
+
+    int shapeType;
 };
 
 #endif // SHPCONTENT_H

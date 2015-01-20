@@ -1,15 +1,14 @@
 #include "ViewerWidget.h"
-#include "fonctionOSG.h"
 
 
-ViewerWidget::ViewerWidget(osgViewer::ViewerBase::ThreadingModel threadingModel) : QWidget()
+ViewerWidget::ViewerWidget(osgViewer::ViewerBase::ThreadingModel threadingModel, Ui::MainWindow * ui) : QWidget()
     {
         setThreadingModel(threadingModel);
 
         // disable the default setting of viewer.done() by pressing Escape.
         setKeyEventSetsDone(0);
 
-        QWidget* widget1 = addViewWidget( createGraphicsWindow(0,0,100,100), creerScene() );
+        QWidget* widget1 = addViewWidget( createGraphicsWindow(0,0,100,100), creerScene(ui) );
 
         QGridLayout* grid = new QGridLayout;
         grid->addWidget( widget1, 0, 0 );

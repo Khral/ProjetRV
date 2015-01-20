@@ -1,10 +1,5 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "fonctionOSG.h"
-#include "ViewerWidget.h"
 
-#define SHP 0
-#define SLD 1
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -35,7 +30,7 @@ void MainWindow::jouerScene()
         while (arguments.read("--DrawThreadPerContext")) threadingModel = osgViewer::ViewerBase::DrawThreadPerContext;
         while (arguments.read("--CullThreadPerCameraDrawThreadPerContext")) threadingModel = osgViewer::ViewerBase::CullThreadPerCameraDrawThreadPerContext;*/
 
-        ViewerWidget* viewWidget = new ViewerWidget(threadingModel);
+        ViewerWidget* viewWidget = new ViewerWidget(threadingModel, ui);
         viewWidget->setGeometry( 100, 100, 800, 600 );
 
         ui->layout_scene->addWidget(viewWidget);

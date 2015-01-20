@@ -4,10 +4,10 @@ using namespace std;
 
 SHPContent::SHPContent(string path)
 {
-    int pnEntities[1];//Ceci n'a aucun sens mais ca marche
-    int pnShapeType[1];//Fun fact : si on remplacd 1 par 0 ca marche aussi et j'ai toujours aucune idée de pourquoi...
-    double padfMinBound[4];
-    double padfMaxBound[4];
+    int pnEntities[200]; //Ceci n'a aucun sens mais ca marche
+    int pnShapeType[200]; //Fun fact : si on remplace 1 par 0 ca marche aussi et j'ai toujours aucune idée de pourquoi...
+    double padfMinBound[200];
+    double padfMaxBound[200];
 
     SHPHandle file = NULL;
 
@@ -15,19 +15,20 @@ SHPContent::SHPContent(string path)
 
     ifstream fichier( path.c_str() );
     if(fichier.fail())
-        cerr << "Fichier introuvable" << endl;
+        cerr << path  << " : Fichier introuvable" << endl;
 
     SHPGetInfo(file, pnEntities,pnShapeType, padfMinBound, padfMaxBound);
 
-     //Read Bounding Box of Shapefile
+    //Read Bounding Box of Shapefile
     sBoundingBox.fMaxX=padfMaxBound[0];
     sBoundingBox.fMaxY=padfMaxBound[1];
 
     sBoundingBox.fMinX=padfMinBound[0];
     sBoundingBox.fMinY=padfMinBound[1];
 
-
     if(*pnShapeType == SHPT_NULL) return;
+
+    shapeType = *pnShapeType;
 
     //Point Shapefile
     if(*pnShapeType == SHPT_POINT)
