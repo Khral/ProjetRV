@@ -31,7 +31,7 @@ SHPContent::SHPContent(string path)
     shapeType = *pnShapeType;
 
     //Point Shapefile
-    if(*pnShapeType == SHPT_POINT)
+    if(*pnShapeType == SHPT_POINT || *pnShapeType == SHPT_POINTZ || *pnShapeType == SHPT_POINTM)
     {
         SHPObject *psShape;
         for(int i=0;i<*pnEntities;i++)
@@ -42,34 +42,50 @@ SHPContent::SHPContent(string path)
             double fY = -psShape->padfY[0];
 
             //Plot these points
-            MyPoint2D pt;
+            MyPoint pt;
             pt.dX=fX;
             pt.dY=-fY;
+
+            //Add 3D
+            if(*pnShapeType == SHPT_POINTZ)
+            {
+                double fZ = psShape->padfZ[0];
+                pt.dZ=fZ;
+            }
+
             vPoints.push_back(pt);
         }
     }
 
-
     //Line Shapefile
-    else if(*pnShapeType == SHPT_ARC)
+    else if(*pnShapeType == SHPT_ARC || *pnShapeType == SHPT_ARCZ || *pnShapeType == SHPT_ARCM)
     {
         SHPObject *psShape;
         for(int i=0;i<*pnEntities;i++)
         {
             psShape = SHPReadObject(file, i);
-            vector<MyPoint2D> tempPointArray;
+            vector<MyPoint> tempPointArray;
 
             for(int j=0;j<psShape->nVertices;j++)
             {
                 double fX = psShape->padfX[j];
                 double fY = psShape->padfY[j];
-                MyPoint2D pt;
+
+                MyPoint pt;
                 pt.dX=fX;
                 pt.dY=fY;
+
+                //Add 3D
+                if(*pnShapeType == SHPT_ARCZ)
+                {
+                    double fZ = psShape->padfZ[0];
+                    pt.dZ=fZ;
+                }
+
                 tempPointArray.push_back(pt);
             }
 
-            MyLineString2D linestring;
+            MyLineString linestring;
             linestring.vPointList=tempPointArray;
             vLines.push_back(linestring);
 
@@ -77,24 +93,32 @@ SHPContent::SHPContent(string path)
     }
 
     //Polygon Shapefile
-    if(*pnShapeType == SHPT_POLYGON)
+    if(*pnShapeType == SHPT_POLYGON || *pnShapeType == SHPT_POLYGONM || *pnShapeType == SHPT_POLYGONZ)
     {
         SHPObject *psShape;
         for(int i=0;i<*pnEntities;i++)
         {
             psShape = SHPReadObject(file, i);
-            vector<MyPoint2D> tempPointArray;
+            vector<MyPoint> tempPointArray;
 
             for(int j=0;j<psShape->nVertices;j++)
             {
                 double fX = psShape->padfX[j];
                 double fY = psShape->padfY[j];
-                MyPoint2D pt;
+                MyPoint pt;
                 pt.dX=fX;
                 pt.dY=fY;
+
+                //Add 3D
+                if(*pnShapeType == SHPT_POLYGONZ)
+                {
+                    double fZ = psShape->padfZ[0];
+                    pt.dZ=fZ;
+                }
+
                 tempPointArray.push_back(pt);
             }
-            MyPolygon2D polygon;
+            MyPolygon polygon;
             polygon.vPointList=tempPointArray;
             vPolygons.push_back(polygon);
         }

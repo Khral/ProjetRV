@@ -16,6 +16,6 @@ SOURCES += \
     shpcontent.cpp \
     sldcontent.cpp
 
-LIBS+=-losg -losgGA -losgDB -losgViewer -losgText -losgUtil -lOpenThreads -losgWidget -losgQt -lshp
+LIBS+=-losg -losgGA -losgDB -losgViewer -losgText -losgUtil -lOpenThreads -losgWidget -losgQt -lshp -ltinyxml
 
 QT += opengl

@@ -8,31 +8,32 @@
 #include <vector>
 #include <string>
 
-typedef struct MyPoint2D
+typedef struct MyPoint
 {
  double dX;
  double dY;
+ double dZ;
 
-}MyPoint2D;
+}MyPoint;
 
-typedef struct MyLineString2D
+typedef struct MyLineString
 {
- std::vector<MyPoint2D> vPointList;
+ std::vector<MyPoint> vPointList;
 
-}MyLineString2D;
+}MyLineString;
 
-typedef struct MyPolygon2D
+typedef struct MyPolygon
 {
- std::vector<MyPoint2D> vPointList;
+ std::vector<MyPoint> vPointList;
 
-}MyPolygon2D;
+}MyPolygon;
 
 typedef struct SBoundingBox
 {
- float fMaxX;
- float fMaxY;
- float fMinX;
- float fMinY;
+    float fMaxX;
+    float fMaxY;
+    float fMinX;
+    float fMinY;
 
 }SBoundingBox;
 
@@ -43,11 +44,11 @@ public:
     SHPContent(std::string path);
 
     //Holds Coordinates of Point Shapefile
-    std::vector<MyPoint2D> vPoints;
+    std::vector<MyPoint> vPoints;
     //Holds Coordinates of Line Shapefile
-    std::vector<MyLineString2D> vLines;
+    std::vector<MyLineString> vLines;
     //Holds Coordinates of Polygon Shapefile
-    std::vector<MyPolygon2D> vPolygons;
+    std::vector<MyPolygon> vPolygons;
     //Bounding Box of Shapefile
     SBoundingBox sBoundingBox;
 
