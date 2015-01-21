@@ -3,6 +3,8 @@
 
 #include <shapefil.h>
 #include <string>
+#include <tinyxml.h>
+
 
 class SLDContent
 {
