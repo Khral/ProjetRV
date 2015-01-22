@@ -3,7 +3,11 @@
 
 #include <shapefil.h>
 #include <string>
-#include <tinyxml.h>
+#include <tinyxml2.h>
+#include <vector>
+#include <stdlib.h>
+#include <stdio.h>
+#include <iostream>
 
 
 class SLDContent
@@ -12,7 +16,7 @@ public:
     SLDContent(std::string path);
 
     int type;
-    int forme;
+    std::string forme;
     std::string couleur;
     int alpha;
     int taille;
@@ -31,6 +35,9 @@ public:
     bool texteSuitLigne;
 
     int pointille[2];
+
+private:
+    void explorer(tinyxml2::XMLElement* elem);
 };
 
 #endif // SLDCONTENT_H

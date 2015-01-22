@@ -79,6 +79,24 @@ osg::Node* creerScene(Ui::MainWindow * ui)
                 geode->addDrawable(geometry);
             }
             break;
+
+        case SHPT_MULTIPATCH:
+        for(i=0;i<fileSHP.vMultipatchs.size();i++)
+        {
+            vertices = new osg::Vec3Array;
+            geometry = new osg::Geometry();
+
+            for(j=0;j<fileSHP.vMultipatchs[i].vPointList.size();j++)
+            {
+                vertices->push_back(osg::Vec3(fileSHP.vMultipatchs[i].vPointList[j].dX,fileSHP.vMultipatchs[i].vPointList[j].dZ,fileSHP.vMultipatchs[i].vPointList[j].dY));
+            }
+
+            geometry->setVertexArray(vertices);
+            da = new osg::DrawArrays(osg::PrimitiveSet::LINES,0,vertices->size());
+            geometry->addPrimitiveSet(da);
+            geode->addDrawable(geometry);
+        }
+        break;
     }
 
     geode->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);

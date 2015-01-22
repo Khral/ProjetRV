@@ -28,6 +28,11 @@ typedef struct MyPolygon
 
 }MyPolygon;
 
+typedef struct MyMultipatch
+{
+    std::vector<MyPoint> vPointList;
+}MyMultipatch;
+
 typedef struct SBoundingBox
 {
     float fMaxX;
@@ -49,6 +54,8 @@ public:
     std::vector<MyLineString> vLines;
     //Holds Coordinates of Polygon Shapefile
     std::vector<MyPolygon> vPolygons;
+
+    std::vector<MyMultipatch> vMultipatchs;
     //Bounding Box of Shapefile
     SBoundingBox sBoundingBox;
 

@@ -30,6 +30,8 @@ SHPContent::SHPContent(string path)
 
     shapeType = *pnShapeType;
 
+    cerr << shapeType << endl;
+
     //Point Shapefile
     if(*pnShapeType == SHPT_POINT || *pnShapeType == SHPT_POINTZ || *pnShapeType == SHPT_POINTM)
     {
@@ -78,7 +80,7 @@ SHPContent::SHPContent(string path)
                 //Add 3D
                 if(*pnShapeType == SHPT_ARCZ)
                 {
-                    double fZ = psShape->padfZ[0];
+                    double fZ = psShape->padfZ[j];
                     pt.dZ=fZ;
                 }
 
@@ -88,12 +90,11 @@ SHPContent::SHPContent(string path)
             MyLineString linestring;
             linestring.vPointList=tempPointArray;
             vLines.push_back(linestring);
-
         }
     }
 
     //Polygon Shapefile
-    if(*pnShapeType == SHPT_POLYGON || *pnShapeType == SHPT_POLYGONM || *pnShapeType == SHPT_POLYGONZ)
+    else if(*pnShapeType == SHPT_POLYGON || *pnShapeType == SHPT_POLYGONM || *pnShapeType == SHPT_POLYGONZ)
     {
         SHPObject *psShape;
         for(int i=0;i<*pnEntities;i++)
@@ -112,7 +113,7 @@ SHPContent::SHPContent(string path)
                 //Add 3D
                 if(*pnShapeType == SHPT_POLYGONZ)
                 {
-                    double fZ = psShape->padfZ[0];
+                    double fZ = psShape->padfZ[j];
                     pt.dZ=fZ;
                 }
 
@@ -123,6 +124,33 @@ SHPContent::SHPContent(string path)
             vPolygons.push_back(polygon);
         }
 
+    }
+
+    else
+    {
+        SHPObject *psShape;
+        for(int i=0;i<*pnEntities;i++)
+        {
+            psShape = SHPReadObject(file, i);
+            vector<MyPoint> tempPointArray;
+
+            for(int j=0;j<psShape->nVertices;j++)
+            {
+                double fX = psShape->padfX[j];
+                double fY = psShape->padfY[j];
+                MyPoint pt;
+                pt.dX=fX;
+                pt.dY=fY;
+
+                double fZ = psShape->padfZ[j];
+                pt.dZ=fZ;
+
+                tempPointArray.push_back(pt);
+            }
+            MyMultipatch multipatch;
+            multipatch.vPointList=tempPointArray;
+            vMultipatchs.push_back(multipatch);
+        }
     }
 
     SHPClose(file);
