@@ -17,14 +17,14 @@ public:
 
     int type;
     std::string forme;
-    std::string couleur;
-    int alpha;
+    float couleur[3] = {0,0,0};
+    float alpha = 1;
     int taille;
     int rotation;
 
     bool bordure;
     int tailleBordure;
-    std::string couleurBordure;
+    float couleurBordure[3] = {0,0,0};
 
     bool texte;
     std::string policeTexte;

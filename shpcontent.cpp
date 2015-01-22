@@ -54,13 +54,16 @@ SHPContent::SHPContent(string path)
                 double fZ = psShape->padfZ[0];
                 pt.dZ=fZ;
             }
+            else
+                pt.dZ=0;
+
 
             vPoints.push_back(pt);
         }
     }
 
     //Line Shapefile
-    else if(*pnShapeType == SHPT_ARC || *pnShapeType == SHPT_ARCZ || *pnShapeType == SHPT_ARCM)
+    else if(*pnShapeType == SHPT_ARC || *pnShapeType == SHPT_ARCZ || *pnShapeType == SHPT_ARCM || *pnShapeType == SHPT_MULTIPOINT || *pnShapeType == SHPT_MULTIPOINTM || *pnShapeType == SHPT_MULTIPOINTZ)
     {
         SHPObject *psShape;
         for(int i=0;i<*pnEntities;i++)
@@ -83,6 +86,8 @@ SHPContent::SHPContent(string path)
                     double fZ = psShape->padfZ[j];
                     pt.dZ=fZ;
                 }
+                else
+                    pt.dZ=0;
 
                 tempPointArray.push_back(pt);
             }
@@ -116,6 +121,8 @@ SHPContent::SHPContent(string path)
                     double fZ = psShape->padfZ[j];
                     pt.dZ=fZ;
                 }
+                else
+                    pt.dZ=0;
 
                 tempPointArray.push_back(pt);
             }
